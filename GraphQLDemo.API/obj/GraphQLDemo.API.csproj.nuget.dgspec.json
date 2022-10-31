@@ -14,12 +14,14 @@
         "outputPath": "C:\\Projects\\GraphQLDemo\\GraphQLDemo.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\a.kupe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\a.kupe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,6 +67,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.0-rc.2.22472.11, )"
+            },
+            "SQLite": {
+              "target": "Package",
+              "version": "[3.13.0, )"
             }
           },
           "imports": [

@@ -1,51 +1,81 @@
 ﻿using Bogus;
+using GraphQLDemo.API.DTOs;
 using GraphQLDemo.API.Models;
+using GraphQLDemo.API.Schema.Filter;
+using GraphQLDemo.API.Schema.Sorters;
+using GraphQLDemo.API.Services;
+using GraphQLDemo.API.Services.Courses;
 
 namespace GraphQLDemo.API.Schema.Queries;
 
 public class Query
 {
-    private readonly Faker<InstructorType> _instructorFaker;
-    private readonly Faker<CourseType> _courseFaker;
-    private readonly Faker<StudentType> _studentFaker;
+    private readonly CoursesRepository _coursesRepository;
 
-    public Query()
+    public Query(CoursesRepository coursesRepository)
     {
-        _instructorFaker = new Faker<InstructorType>()
-            .RuleFor(c => c.Id, f => Guid.NewGuid())
-            .RuleFor(c => c.Firstname, f => f.Name.FirstName())
-            .RuleFor(c => c.Lastname, f => f.Name.LastName())
-            .RuleFor(c => c.Salary, f => f.Random.Double(0, 100000));
-
-        _studentFaker = new Faker<StudentType>()
-            .RuleFor(c => c.Id, f => Guid.NewGuid())
-            .RuleFor(c => c.Firstname, f => f.Name.FirstName())
-            .RuleFor(c => c.Lastname, f => f.Name.LastName())
-            .RuleFor(c => c.GPA, f => f.Random.Double(1, 4));
-
-        _courseFaker = new Faker<CourseType>()
-            .RuleFor(c => c.Id, f => Guid.NewGuid())
-            .RuleFor(c => c.Name, f => f.Name.JobTitle())
-            .RuleFor(c => c.Subject, f => f.PickRandom<Subject>())
-            .RuleFor(c => c.Instructor, f => _instructorFaker.Generate())
-            .RuleFor(c => c.Students, f => _studentFaker.Generate(3));
-        
+        _coursesRepository = coursesRepository;
     }
 
-    public IEnumerable<CourseType> GetCourses()
+    //Case when first we select the data from db and then do the filter/pagination/filter
+    [UseSorting]
+    public async Task<IEnumerable<CourseType>> GetCourses()
     {
-        
-        return _courseFaker.Generate(5);
-        
+        IEnumerable<CourseDTO> courseDTOs = await _coursesRepository.GetAll();
+
+        return courseDTOs.Select(c => new CourseType()
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Subject = c.Subject,
+            InstructorId = c.InstructorId,
+        }); 
+    }
+
+
+    public async Task<IEnumerable<CourseType>> GetOffsetCourses()
+    {
+        IEnumerable<CourseDTO> courseDTOs = await _coursesRepository.GetAll();
+
+        return courseDTOs.Select(c => new CourseType()
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Subject = c.Subject,
+            InstructorId = c.InstructorId,
+        });
+    }
+
+    //Case when pagigation is affecting directly query in db
+    //order does matter
+    [UseDbContext(typeof(SchoolDbContext))]
+    [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+    //remove property from filter funx
+    [UseFiltering(typeof(CourseFilterType))]
+    [UseSorting(typeof(CourseSortType))]
+    public IQueryable<CourseType> GetPaginatedCourses([ScopedService] SchoolDbContext context)
+    {
+
+        return context.Courses.Select(c => new CourseType()
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Subject = c.Subject,
+            InstructorId = c.InstructorId,
+        });
     }
 
     public async Task<CourseType> GetCourseById(Guid id)
     {
-        await Task.Delay(1000);
+        CourseDTO courseDTO = await _coursesRepository.GetById(id);
 
-        CourseType course = _courseFaker.Generate();
-        course.Id = id;
-        return course;
+        return new CourseType()
+        {
+            Id = courseDTO.Id,
+            Name = courseDTO.Name,
+            Subject = courseDTO.Subject,
+            InstructorId = courseDTO.InstructorId,
+        };
     }
     
     [GraphQLDeprecated("Test")]

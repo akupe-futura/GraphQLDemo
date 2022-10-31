@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZT+uc5LrLwxBanqg6xpWjz5im9LcILNC5Dj1QRHuBWtl+EkFb8727ssVhAqv5d7vuQ0uWmHkjfyEvFXUAxFYww==",
+  "dgSpecHash": "5qxCxg8mTXf4+Yy0TOzZOko19MjlPNkDJJ8SrLbDvCnupo1dkxfFovUbcDfHF5EBubfLGSQ83UpterVv1KE41w==",
   "success": true,
   "projectFilePath": "C:\\Projects\\GraphQLDemo\\GraphQLDemo.API\\GraphQLDemo.API.csproj",
   "expectedPackageFiles": [
@@ -52,6 +52,7 @@
     "C:\\Users\\a.kupe\\.nuget\\packages\\microsoft.extensions.options\\7.0.0-rc.2.22472.3\\microsoft.extensions.options.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\a.kupe\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0-rc.2.22472.3\\microsoft.extensions.primitives.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\a.kupe\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\a.kupe\\.nuget\\packages\\sqlite\\3.13.0\\sqlite.3.13.0.nupkg.sha512",
     "C:\\Users\\a.kupe\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.2\\sqlitepclraw.bundle_e_sqlite3.2.1.2.nupkg.sha512",
     "C:\\Users\\a.kupe\\.nuget\\packages\\sqlitepclraw.core\\2.1.2\\sqlitepclraw.core.2.1.2.nupkg.sha512",
     "C:\\Users\\a.kupe\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.2\\sqlitepclraw.lib.e_sqlite3.2.1.2.nupkg.sha512",
