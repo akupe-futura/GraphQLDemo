@@ -38,6 +38,10 @@ namespace GraphQLDemo.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("InstructorId")
                         .HasColumnType("TEXT");
 

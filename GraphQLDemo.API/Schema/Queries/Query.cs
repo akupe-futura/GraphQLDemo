@@ -5,6 +5,7 @@ using GraphQLDemo.API.Schema.Filter;
 using GraphQLDemo.API.Schema.Sorters;
 using GraphQLDemo.API.Services;
 using GraphQLDemo.API.Services.Courses;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraphQLDemo.API.Schema.Queries;
 
@@ -16,22 +17,6 @@ public class Query
     {
         _coursesRepository = coursesRepository;
     }
-
-    //Case when first we select the data from db and then do the filter/pagination/filter
-    [UseSorting]
-    public async Task<IEnumerable<CourseType>> GetCourses()
-    {
-        IEnumerable<CourseDTO> courseDTOs = await _coursesRepository.GetAll();
-
-        return courseDTOs.Select(c => new CourseType()
-        {
-            Id = c.Id,
-            Name = c.Name,
-            Subject = c.Subject,
-            InstructorId = c.InstructorId,
-        }); 
-    }
-
 
     public async Task<IEnumerable<CourseType>> GetOffsetCourses()
     {
@@ -50,10 +35,11 @@ public class Query
     //order does matter
     [UseDbContext(typeof(SchoolDbContext))]
     [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+    //[UseProjection]
     //remove property from filter funx
     [UseFiltering(typeof(CourseFilterType))]
-    [UseSorting(typeof(CourseSortType))]
-    public IQueryable<CourseType> GetPaginatedCourses([ScopedService] SchoolDbContext context)
+    //[UseSorting(typeof(CourseSortType))]
+    public IQueryable<CourseType> GetCourses([ScopedService] SchoolDbContext context)
     {
 
         return context.Courses.Select(c => new CourseType()
@@ -62,10 +48,39 @@ public class Query
             Name = c.Name,
             Subject = c.Subject,
             InstructorId = c.InstructorId,
+            CreatorId = c.CreatorId,
         });
     }
 
-    public async Task<CourseType> GetCourseById(Guid id)
+    [UseDbContext(typeof(SchoolDbContext))]
+    public async Task<IEnumerable<ISearchResultType>> Search(string term, [ScopedService] SchoolDbContext context)
+    {
+        IEnumerable<CourseType> courses = await context.Courses
+            .Where(c => c.Name.Contains(term))
+            .Select(c => new CourseType()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Subject = c.Subject,
+                InstructorId = c.InstructorId,
+                CreatorId = c.CreatorId,
+            }).ToListAsync();
+
+        IEnumerable<InstructorType> instructors = await context.Instructors
+            .Where(i => i.Firstname.Contains(term)|| i.Lastname.Contains(term))
+            .Select(i => new InstructorType()
+            {
+                Id = i.Id,
+                Firstname = i.Firstname,
+                Lastname = i.Lastname,
+                Salary = i.Salary,
+                
+            }).ToListAsync();
+
+        return new List<ISearchResultType>().Concat(courses).Concat(instructors);
+    }
+
+    public async Task<CourseType> GetCourseByIdAsync(Guid id)
     {
         CourseDTO courseDTO = await _coursesRepository.GetById(id);
 

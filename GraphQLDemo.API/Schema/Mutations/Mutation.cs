@@ -1,8 +1,11 @@
-﻿using GraphQLDemo.API.DTOs;
+﻿using FirebaseAdminAuthentication.DependencyInjection.Models;
+using GraphQLDemo.API.DTOs;
 using GraphQLDemo.API.Schema.Queries;
 using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services.Courses;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Subscriptions;
+using System.Security.Claims;
 
 namespace GraphQLDemo.API.Schema.Mutations;
 
@@ -15,13 +18,17 @@ public class Mutation
         _coursesRepository = coursesRepository;
     }
 
-    public async Task<CourseResult> CreateCourse(CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
+    [Authorize]
+    public async Task<CourseResult> CreateCourse(CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender, ClaimsPrincipal claimsPrincipal)
     {
+        string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
+
         CourseDTO courseDto = new CourseDTO()
         {
             Name = courseInputType.Name,
             Subject = courseInputType.Subject,
-            InstructorId = courseInputType.InstructorId
+            InstructorId = courseInputType.InstructorId,
+            CreatorId = userId
         };
         
         courseDto = await _coursesRepository.Create(courseDto);
@@ -40,15 +47,29 @@ public class Mutation
         return course;
     }
 
-    public async Task<CourseResult> UpdateCourse(Guid id, CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
+    [Authorize]
+    public async Task<CourseResult> UpdateCourse(Guid id, CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender, ClaimsPrincipal claimsPrincipal)
     {
-        CourseDTO courseDto = new CourseDTO()
+        string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
+
+        CourseDTO courseDto = await _coursesRepository.GetById(id);
+
+
+        if (courseDto.CreatorId == null)
         {
-            Id=id,
-            Name = courseInputType.Name,
-            Subject = courseInputType.Subject,
-            InstructorId = courseInputType.InstructorId
-        };
+            throw new GraphQLException(new Error("Course not found.", "COURSE_NOT_FOUND"));
+        }
+
+        if (courseDto.CreatorId != userId)
+        {
+            throw new GraphQLException(new Error("You do not have permission to update this course.", "INVALID_PERMISSION"));
+        }
+
+
+        courseDto.Name = courseInputType.Name;
+        courseDto.Subject = courseInputType.Subject;
+        courseDto.InstructorId = courseInputType.InstructorId;
+        
         
         courseDto = await _coursesRepository.Update(courseDto);
         
@@ -68,6 +89,7 @@ public class Mutation
         return course;
     }
 
+    [Authorize(Policy = "IsAdmin")]
     public async Task<bool> DeleteCourse(Guid id)
     {
         try
@@ -78,7 +100,6 @@ public class Mutation
         {
 
             return false;
-        }
-        
+        }       
     }
 }

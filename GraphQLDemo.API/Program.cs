@@ -1,3 +1,6 @@
+using FirebaseAdmin;
+using FirebaseAdminAuthentication.DependencyInjection.Extensions;
+using FirebaseAdminAuthentication.DependencyInjection.Models;
 using GraphQLDemo.API.DataLoaders;
 using GraphQLDemo.API.Schema;
 using GraphQLDemo.API.Schema.Mutations;
@@ -15,12 +18,21 @@ builder.Services
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddSubscriptionType<Subscription>()
+    .AddType<CourseType>()
+    .AddType<InstructorType>()
     .AddFiltering()
-    .AddSorting();
+    .AddSorting()
+    .AddProjections()
+    .AddAuthorization();
+
+builder.Services.AddSingleton(FirebaseApp.Create());
+builder.Services.AddFirebaseAuthentication();
+builder.Services.AddAuthorization(o => o.AddPolicy("IsAdmin", p => p.RequireClaim(FirebaseUserClaimType.EMAIL, "kidakupe@gmail.com")));
 
 builder.Services.AddScoped<CoursesRepository>();
 builder.Services.AddScoped<InstructorsRepository>();
 builder.Services.AddScoped<InstructorDataLoader>();
+builder.Services.AddScoped<UserDataLoader>();
 
 builder.Services.AddInMemorySubscriptions();
 
@@ -43,6 +55,7 @@ using (var scope = app.Services.CreateScope())
 app.MapGraphQL();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseWebSockets();
 
