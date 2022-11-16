@@ -40,13 +40,29 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Bogus": {
+            "AppAny.HotChocolate.FluentValidation": {
               "target": "Package",
-              "version": "[34.0.2, )"
+              "version": "[0.6.1, )"
             },
             "FirebaseAdminAuthentication.DependencyInjection": {
               "target": "Package",
               "version": "[1.1.0, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.2.2, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.2.2, )"
+            },
+            "HotChocolate": {
+              "target": "Package",
+              "version": "[12.15.2, )"
+            },
+            "HotChocolate.Abstractions": {
+              "target": "Package",
+              "version": "[12.15.2, )"
             },
             "HotChocolate.AspNetCore": {
               "target": "Package",
@@ -64,17 +80,17 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[7.0.0-rc.2.22472.11, )"
+              "version": "[7.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[7.0.0-rc.2.22472.11, )"
+              "version": "[7.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.10, )"
+              "version": "[7.0.0, )"
             },
             "SQLite": {
               "target": "Package",

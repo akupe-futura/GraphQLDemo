@@ -41,7 +41,6 @@ C:\Projects\GraphQLDemo\GraphQLDemo.API\obj\Debug\net6.0\refint\GraphQLDemo.API.
 C:\Projects\GraphQLDemo\GraphQLDemo.API\obj\Debug\net6.0\GraphQLDemo.API.pdb
 C:\Projects\GraphQLDemo\GraphQLDemo.API\obj\Debug\net6.0\GraphQLDemo.API.genruntimeconfig.cache
 C:\Projects\GraphQLDemo\GraphQLDemo.API\obj\Debug\net6.0\ref\GraphQLDemo.API.dll
-C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\Bogus.dll
 C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\HotChocolate.Data.dll
 C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\HotChocolate.Data.EntityFramework.dll
 C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\Microsoft.Data.Sqlite.dll
@@ -114,3 +113,9 @@ C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\System.Security.Permissions.dll
 C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\firebase-config.json
+C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\FluentValidation.dll
+C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\FluentValidation.AspNetCore.dll
+C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Projects\GraphQLDemo\GraphQLDemo.API\obj\Debug\net6.0\GraphQLDemo.API.MvcApplicationPartsAssemblyInfo.cs
+C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\libman.json
+C:\Projects\GraphQLDemo\GraphQLDemo.API\bin\Debug\net6.0\AppAny.HotChocolate.FluentValidation.dll
